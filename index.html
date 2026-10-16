@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="จัดการโปรเจกต์สร้างสรรค์ของคุณในที่เดียว">
+  <title>Creative Project Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Creative Project Tracker home">
+        <span class="brand-icon">✳</span>
+        <span><small>YOUR IDEAS, IN MOTION</small><strong>Creative Tracker</strong></span>
+      </a>
+      <span id="dbStatus" class="db-status">กำลังเชื่อมต่อ…</span>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div class="intro-copy">
+          <p class="eyebrow">PERSONAL PROJECT SPACE</p>
+          <h1>ทำให้ไอเดีย<br><span>กลายเป็นผลงาน</span></h1>
+          <p>รวมโปรเจกต์ที่คุณอยากทำไว้ในที่เดียว ตั้งแต่ไอเดียแรกจนถึงวันที่ทำเสร็จ</p>
+        </div>
+        <div class="intro-art" aria-hidden="true">
+          <div class="art-sun"></div><div class="art-card art-card-one">✎</div>
+          <div class="art-card art-card-two">✦</div><div class="art-line"></div>
+        </div>
+      </section>
+
+      <section class="overview" aria-label="สรุปโปรเจกต์">
+        <article class="overview-card"><span class="metric-label">โปรเจกต์ทั้งหมด</span><strong id="allCount">0</strong><span class="metric-note">ทุกไอเดียของคุณ</span></article>
+        <article class="overview-card"><span class="metric-label">กำลังทำ</span><strong id="workingCount">0</strong><span class="metric-note">เดินหน้าทีละขั้น</span></article>
+        <article class="overview-card"><span class="metric-label">เสร็จแล้ว</span><strong id="doneCount">0</strong><span class="metric-note">ความสำเร็จที่สะสม</span></article>
+      </section>
+
+      <section class="workspace">
+        <div class="workspace-heading">
+          <div><p class="eyebrow">THE WORKBENCH</p><h2>โปรเจกต์ของฉัน</h2></div>
+          <button id="newProjectBtn" class="primary-button">＋ เพิ่มโปรเจกต์</button>
+        </div>
+        <div class="toolbar">
+          <p id="resultText">รายการโปรเจกต์ทั้งหมด</p>
+          <div class="filters">
+            <label for="categoryFilter" class="sr-only">กรองหมวดหมู่</label>
+            <select id="categoryFilter">
+              <option value="all">ทุกหมวดหมู่</option><option value="illustration">ภาพวาด</option>
+              <option value="comic">การ์ตูน</option><option value="design">ออกแบบ</option><option value="other">อื่น ๆ</option>
+            </select>
+            <label for="statusFilter" class="sr-only">กรองสถานะ</label>
+            <select id="statusFilter">
+              <option value="all">ทุกสถานะ</option><option value="idea">ไอเดีย</option>
+              <option value="working">กำลังทำ</option><option value="done">เสร็จแล้ว</option>
+            </select>
+          </div>
+        </div>
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+        <div id="projectGrid" class="project-grid"></div>
+        <div id="emptyState" class="empty-state" hidden>
+          <div class="empty-symbol">✳</div><h3>พื้นที่นี้ยังว่างอยู่</h3>
+          <p>เพิ่มโปรเจกต์แรก แล้วเริ่มจัดระเบียบไอเดียของคุณได้เลย</p>
+          <button id="emptyNewBtn" class="secondary-button">เพิ่มโปรเจกต์แรก</button>
+        </div>
+      </section>
+    </main>
+    <footer><span>Creative Tracker</span><span>Small steps make finished work.</span></footer>
+  </div>
+
+  <dialog id="projectDialog">
+    <form id="projectForm">
+      <div class="dialog-top"><div><p class="eyebrow">PROJECT DETAILS</p><h2 id="dialogHeading">เพิ่มโปรเจกต์</h2></div><button type="button" id="closeDialog" class="close-button" aria-label="ปิด">×</button></div>
+      <input id="projectId" type="hidden">
+      <label for="projectName">ชื่อโปรเจกต์ <em>*</em></label>
+      <input id="projectName" name="name" maxlength="100" placeholder="เช่น การ์ตูนสั้นตอนที่ 1" required>
+      <label for="projectDescription">รายละเอียด</label>
+      <textarea id="projectDescription" name="description" rows="3" maxlength="1500" placeholder="เป้าหมาย ไอเดีย หรือสิ่งที่ต้องทำ…"></textarea>
+      <div class="form-row">
+        <div><label for="projectCategory">หมวดหมู่</label><select id="projectCategory">
+          <option value="illustration">ภาพวาด</option><option value="comic">การ์ตูน</option><option value="design">ออกแบบ</option><option value="other">อื่น ๆ</option>
+        </select></div>
+        <div><label for="projectStatus">สถานะ</label><select id="projectStatus">
+          <option value="idea">ไอเดีย</option><option value="working">กำลังทำ</option><option value="done">เสร็จแล้ว</option>
+        </select></div>
+      </div>
+      <label for="projectDate">วันที่ตั้งเป้าไว้</label><input id="projectDate" type="date">
+      <p id="formError" class="form-error" role="alert"></p>
+      <div class="dialog-actions"><button type="button" id="cancelDialog" class="secondary-button">ยกเลิก</button><button type="submit" class="primary-button">บันทึกโปรเจกต์</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
